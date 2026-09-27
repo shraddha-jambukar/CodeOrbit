@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Password Strength Checker</title>
+
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'passwordcheck/style.css' %}">
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="card">
+
+        <h1>Password Strength Checker</h1>
+
+        <p class="subtitle">
+            Check the strength of your password
+        </p>
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+            <div class="input-box">
+
+                <input
+                    type="password"
+                    name="password"
+                    placeholder="Enter your password"
+                    required
+                >
+
+            </div>
+
+            <button type="submit">
+                Check Password
+            </button>
+
+        </form>
+
+
+        {% if result %}
+
+        <div class="result">
+
+            <h2 class="
+                {% if result.strength == 'STRONG' %}
+                    strong
+                {% elif result.strength == 'MEDIUM' %}
+                    medium
+                {% else %}
+                    weak
+                {% endif %}
+            ">
+                {{ result.strength }}
+            </h2>
+
+            <p class="message">
+                {{ result.message }}
+            </p>
+
+
+            <div class="requirements">
+
+                <div class="{% if result.length %}valid{% endif %}">
+                    {% if result.length %}✓{% else %}○{% endif %}
+                    At least 8 characters
+                </div>
+
+                <div class="{% if result.uppercase %}valid{% endif %}">
+                    {% if result.uppercase %}✓{% else %}○{% endif %}
+                    Uppercase letter
+                </div>
+
+                <div class="{% if result.lowercase %}valid{% endif %}">
+                    {% if result.lowercase %}✓{% else %}○{% endif %}
+                    Lowercase letter
+                </div>
+
+                <div class="{% if result.number %}valid{% endif %}">
+                    {% if result.number %}✓{% else %}○{% endif %}
+                    Number
+                </div>
+
+                <div class="{% if result.special %}valid{% endif %}">
+                    {% if result.special %}✓{% else %}○{% endif %}
+                    Special character
+                </div>
+
+            </div>
+
+        </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+</body>
+</html>
